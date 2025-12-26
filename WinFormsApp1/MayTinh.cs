@@ -55,5 +55,10 @@ namespace WinFormsApp1
             tbDisplay.Clear();
             tbDisplay.Text = "0";
         }
+
+        private void tbDisplay_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

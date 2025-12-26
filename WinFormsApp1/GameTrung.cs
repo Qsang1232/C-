@@ -7,88 +7,88 @@ namespace WinFormsApp1
     public partial class GameTrung : Form
     {
         int score = 0;
-        int eggSpeed = 5;      // Tốc độ rơi
-        int basketSpeed = 90;  // Tốc độ di chuyển giỏ
+        int eggSpeed = 5;
+        int basketSpeed = 30; // Giảm tốc độ giỏ chút cho mượt, 90 hơi nhanh quá
 
         public GameTrung()
         {
             InitializeComponent();
         }
 
-        // 1. Khi Form bắt đầu chạy
         private void Form3_Load(object sender, EventArgs e)
         {
-            // Cài đặt vị trí ban đầu
+            // Đặt giỏ nằm sát đáy
             pbBasket.Top = this.ClientSize.Height - pbBasket.Height - 10;
+            // Căn giữa giỏ lúc đầu
+            pbBasket.Left = (this.ClientSize.Width - pbBasket.Width) / 2;
+
             StartNewGame();
         }
 
-        // Hàm bắt đầu game mới (Dùng chung cho lúc mở và lúc chơi lại)
         private void StartNewGame()
         {
             score = 0;
             lblScore.Text = "Score: 0";
-            eggSpeed = 8; // Reset tốc độ
+            eggSpeed = 5;
 
-            ResetEgg();   // Đưa trứng lên trên
-            tmEgg.Start(); // Chạy đồng hồ
-
-            this.Focus(); // Lấy lại quyền điều khiển bàn phím cho Form
+            ResetEgg();
+            tmEgg.Start();
+            this.Focus();
         }
 
-        // 2. Timer chạy liên tục
         private void tmEgg_Tick(object sender, EventArgs e)
         {
             pbEgg.Top += eggSpeed;
 
-            // --- XỬ LÝ THUA GAME ---
-            // Nếu trứng chạm đáy (Rơi quá chiều cao form)
+            // Nếu trứng chạm đáy
             if (pbEgg.Top > this.ClientSize.Height)
             {
-                tmEgg.Stop(); // Dừng game lại ngay
-
-                // Hiện bảng thông báo
+                tmEgg.Stop();
                 DialogResult hoidap = MessageBox.Show(
-                    "Bạn đã làm vỡ trứng!\nĐiểm của bạn: " + score + "\n\nBạn có muốn chơi lại không?",
+                    "Toang rồi! Trứng đã vỡ.\nĐiểm: " + score + "\n\nChơi lại nha?",
                     "Game Over",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question
                 );
 
-                if (hoidap == DialogResult.Yes)
-                {
-                    StartNewGame(); // Reset game
-                }
-                else
-                {
-                    this.Close(); // Thoát game
-                }
+                if (hoidap == DialogResult.Yes) StartNewGame();
+                else this.Close();
             }
 
-            // --- XỬ LÝ HỨNG TRÚNG ---
+            // Nếu trứng chạm giỏ
             if (pbEgg.Bounds.IntersectsWith(pbBasket.Bounds))
             {
                 score++;
                 lblScore.Text = "Score: " + score;
 
-                // Tăng độ khó: Cứ 5 điểm thì trứng rơi nhanh hơn 1 chút
-                if (score % 5 == 0) eggSpeed += 2;
+                // Tăng độ khó: Cứ 5 điểm tăng tốc 1 lần
+                if (score % 5 == 0) eggSpeed += 1;
 
-                ResetEgg(); // Rơi quả tiếp theo
+                ResetEgg();
             }
         }
 
-        // Hàm đưa trứng lên vị trí ngẫu nhiên
         private void ResetEgg()
         {
-            pbEgg.Top = 80; // Cách đỉnh 80px (để dưới con gà)
             Random r = new Random();
-            pbEgg.Left = r.Next(0, this.ClientSize.Width - pbEgg.Width);
+            // 1. Random vị trí trứng
+            int x = r.Next(10, this.ClientSize.Width - pbEgg.Width - 10);
+
+            pbEgg.Left = x;
+            pbEgg.Top = 80; // Trứng xuất phát từ trên cao
+
+            // 2. Di chuyển con gà đến chỗ trứng rơi (Cho trực quan)
+            // Căn giữa con gà theo quả trứng
+            pbChicken.Left = x - (pbChicken.Width / 2) + (pbEgg.Width / 2);
+
+            // Xử lý nếu gà bị trôi ra khỏi màn hình thì kéo lại
+            if (pbChicken.Left < 0) pbChicken.Left = 0;
+            if (pbChicken.Right > this.ClientSize.Width) pbChicken.Left = this.ClientSize.Width - pbChicken.Width;
         }
 
-        // 3. Sự kiện bấm phím di chuyển
         private void Form3_KeyDown(object sender, KeyEventArgs e)
         {
+            // Thêm logic giữ phím mượt mà hơn (nếu cần) nhưng ở mức cơ bản thì dùng cách này:
             if (e.KeyCode == Keys.Left && pbBasket.Left > 0)
             {
                 pbBasket.Left -= basketSpeed;
@@ -99,16 +99,6 @@ namespace WinFormsApp1
             }
         }
 
-
-        private void btExit_Click(object sender, EventArgs e)
-        {
-            tmEgg.Stop();
-            this.Close();
-        }
-
-        private void pbBasket_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void pbBasket_Click(object sender, EventArgs e) { }
     }
 }

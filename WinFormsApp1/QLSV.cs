@@ -2,26 +2,22 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-
 namespace WinFormsApp1
 {
     public partial class QLSV : Form
     {
-       
         private DataGridView dgvSinhVien;
         private TextBox txtMaSV, txtTenSV, txtLop, txtDiem;
         private Button btnThem, btnXoa, btnSua;
         private Label lblTitle;
-
-      
-        private Color primaryColor = Color.FromArgb(52, 152, 219);
+        
+    private Color primaryColor = Color.FromArgb(52, 152, 219);
         private Color dangerColor = Color.FromArgb(231, 76, 60);
         private Color bgColor = Color.FromArgb(236, 240, 241);
         private Color gridHeaderColor = Color.FromArgb(44, 62, 80);
         private Font mainFont = new Font("Segoe UI", 10, FontStyle.Regular);
         private Font titleFont = new Font("Segoe UI", 16, FontStyle.Bold);
 
-        
         public class SinhVien
         {
             public string MaSV { get; set; }
@@ -34,16 +30,13 @@ namespace WinFormsApp1
 
         public QLSV()
         {
-          
             TaoGiaoDienHienDai();
 
-         
             danhSachSV.Add(new SinhVien { MaSV = "SV01", TenSV = "Nguyen Van A", Lop = "CNTT K15", Diem = 8.5 });
             danhSachSV.Add(new SinhVien { MaSV = "SV02", TenSV = "Tran Thi B", Lop = "QTKD K15", Diem = 7.0 });
             HienThiLenBang();
         }
 
-     
         void HienThiLenBang()
         {
             var source = new BindingSource();
@@ -61,6 +54,13 @@ namespace WinFormsApp1
         {
             if (string.IsNullOrWhiteSpace(txtMaSV.Text)) { MessageBox.Show("Vui lòng nhập Mã SV"); return; }
 
+            // Kiểm tra trùng mã
+            if (danhSachSV.Exists(x => x.MaSV == txtMaSV.Text))
+            {
+                MessageBox.Show("Mã sinh viên này đã tồn tại!");
+                return;
+            }
+
             SinhVien sv = new SinhVien();
             sv.MaSV = txtMaSV.Text;
             sv.TenSV = txtTenSV.Text;
@@ -74,6 +74,44 @@ namespace WinFormsApp1
             HienThiLenBang();
             XoaTrangO();
         }
+
+        // --- ĐÂY LÀ HÀM SỬA MỚI ĐƯỢC THÊM VÀO ---
+        private void BtnSua_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtMaSV.Text))
+            {
+                MessageBox.Show("Vui lòng chọn sinh viên cần sửa (Mã SV không được để trống)");
+                return;
+            }
+
+            string ma = txtMaSV.Text;
+            // Tìm sinh viên trong danh sách
+            SinhVien svCanSua = danhSachSV.Find(x => x.MaSV == ma);
+
+            if (svCanSua != null)
+            {
+                // Cập nhật thông tin
+                svCanSua.TenSV = txtTenSV.Text;
+                svCanSua.Lop = txtLop.Text;
+
+                if (double.TryParse(txtDiem.Text, out double d))
+                    svCanSua.Diem = d;
+                else
+                {
+                    MessageBox.Show("Điểm phải là số");
+                    return;
+                }
+
+                HienThiLenBang();
+                XoaTrangO();
+                MessageBox.Show("Cập nhật thành công!");
+            }
+            else
+            {
+                MessageBox.Show("Không tìm thấy Mã SV này để cập nhật (Lưu ý: Không được sửa Mã SV)!");
+            }
+        }
+        // ----------------------------------------
 
         private void BtnXoa_Click(object sender, EventArgs e)
         {
@@ -105,7 +143,6 @@ namespace WinFormsApp1
 
         void XoaTrangO() { txtMaSV.Clear(); txtTenSV.Clear(); txtLop.Clear(); txtDiem.Clear(); txtMaSV.Focus(); }
 
-  
         private void TaoGiaoDienHienDai()
         {
             this.Size = new Size(600, 650);
@@ -164,7 +201,10 @@ namespace WinFormsApp1
             btnThem.Click += BtnThem_Click;
 
             btnSua = TaoNut("CẬP NHẬT", new Point(250, btnY), Color.FromArgb(46, 204, 113));
-            btnSua.Click += (s, e) => { BtnThem_Click(s, e); };
+
+            // --- ĐÃ SỬA DÒNG NÀY ĐỂ GỌI ĐÚNG HÀM SỬA ---
+            btnSua.Click += BtnSua_Click;
+            // -------------------------------------------
 
             btnXoa = TaoNut("XÓA BỎ", new Point(400, btnY), dangerColor);
             btnXoa.Click += BtnXoa_Click;

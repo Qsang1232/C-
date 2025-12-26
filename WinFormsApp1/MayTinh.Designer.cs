@@ -45,6 +45,7 @@
             tbDisplay.Size = new Size(372, 45);
             tbDisplay.TabIndex = 0;
             tbDisplay.TextAlign = HorizontalAlignment.Right;
+            tbDisplay.TextChanged += tbDisplay_TextChanged;
             // 
             // bt8
             // 
@@ -129,7 +130,9 @@
             btMul.Text = "*";
             btMul.UseVisualStyleBackColor = true;
             btMul.Click += btOperator_Click;
-            
+            // 
+            // bt1
+            // 
             bt1.Font = new Font("Microsoft Sans Serif", 15F, FontStyle.Bold);
             bt1.Location = new Point(14, 280);
             bt1.Margin = new Padding(3, 4, 3, 4);
@@ -139,7 +142,9 @@
             bt1.Text = "1";
             bt1.UseVisualStyleBackColor = true;
             bt1.Click += btNumber_Click;
-           
+            // 
+            // bt2
+            // 
             bt2.Font = new Font("Microsoft Sans Serif", 15F, FontStyle.Bold);
             bt2.Location = new Point(109, 280);
             bt2.Margin = new Padding(3, 4, 3, 4);
@@ -149,7 +154,9 @@
             bt2.Text = "2";
             bt2.UseVisualStyleBackColor = true;
             bt2.Click += btNumber_Click;
-           
+            // 
+            // bt3
+            // 
             bt3.Font = new Font("Microsoft Sans Serif", 15F, FontStyle.Bold);
             bt3.Location = new Point(203, 280);
             bt3.Margin = new Padding(3, 4, 3, 4);
@@ -159,7 +166,9 @@
             bt3.Text = "3";
             bt3.UseVisualStyleBackColor = true;
             bt3.Click += btNumber_Click;
-           
+            // 
+            // btMinus
+            // 
             btMinus.Font = new Font("Microsoft Sans Serif", 15F, FontStyle.Bold);
             btMinus.Location = new Point(298, 280);
             btMinus.Margin = new Padding(3, 4, 3, 4);
@@ -169,7 +178,9 @@
             btMinus.Text = "-";
             btMinus.UseVisualStyleBackColor = true;
             btMinus.Click += btOperator_Click;
-           
+            // 
+            // bt0
+            // 
             bt0.Font = new Font("Microsoft Sans Serif", 15F, FontStyle.Bold);
             bt0.Location = new Point(14, 373);
             bt0.Margin = new Padding(3, 4, 3, 4);
@@ -179,7 +190,9 @@
             bt0.Text = "0";
             bt0.UseVisualStyleBackColor = true;
             bt0.Click += btNumber_Click;
-            
+            // 
+            // btClear
+            // 
             btClear.Font = new Font("Microsoft Sans Serif", 15F, FontStyle.Bold);
             btClear.Location = new Point(109, 373);
             btClear.Margin = new Padding(3, 4, 3, 4);
@@ -189,7 +202,9 @@
             btClear.Text = "C";
             btClear.UseVisualStyleBackColor = true;
             btClear.Click += btClear_Click;
-            
+            // 
+            // btEquals
+            // 
             btEquals.Font = new Font("Microsoft Sans Serif", 15F, FontStyle.Bold);
             btEquals.Location = new Point(203, 373);
             btEquals.Margin = new Padding(3, 4, 3, 4);
@@ -199,7 +214,9 @@
             btEquals.Text = "=";
             btEquals.UseVisualStyleBackColor = true;
             btEquals.Click += btEquals_Click;
-           
+            // 
+            // btPlus
+            // 
             btPlus.Font = new Font("Microsoft Sans Serif", 15F, FontStyle.Bold);
             btPlus.Location = new Point(298, 373);
             btPlus.Margin = new Padding(3, 4, 3, 4);
@@ -209,7 +226,9 @@
             btPlus.Text = "+";
             btPlus.UseVisualStyleBackColor = true;
             btPlus.Click += btOperator_Click;
-           
+            // 
+            // bt7
+            // 
             bt7.Font = new Font("Microsoft Sans Serif", 15F, FontStyle.Bold);
             bt7.Location = new Point(14, 93);
             bt7.Margin = new Padding(3, 4, 3, 4);
@@ -219,7 +238,9 @@
             bt7.Text = "7";
             bt7.UseVisualStyleBackColor = true;
             bt7.Click += btNumber_Click;
-         
+            // 
+            // MayTinh
+            // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(400, 480);
@@ -241,7 +262,7 @@
             Controls.Add(bt7);
             Controls.Add(tbDisplay);
             Margin = new Padding(3, 4, 3, 4);
-            Name = "Form1";
+            Name = "MayTinh";
             Text = "Calculator";
             ResumeLayout(false);
             PerformLayout();
